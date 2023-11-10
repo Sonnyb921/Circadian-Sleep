@@ -62,7 +62,7 @@ struct HomeView: View {
                         if !hasAlreadyLoggedRest() {
                             let components = Calendar.current.dateComponents([.hour, .minute], from: sleepTime, to: wakeTime)
                             _ = Double(components.hour ?? 0) + Double(components.minute ?? 0) / 60
-                            calculateAndLogRestHours(Hoursslept)
+                            calculateAndLogRestHours()
                         } else {
                             showError = true
                         }
