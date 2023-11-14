@@ -25,8 +25,8 @@ struct HomeView: View {
                 // Clock format
                 VStack {
                     Text(currentTimeFormatted)
-                        .font(.system(size: 85))
-                        .foregroundColor(.white)
+                        .font(.system(size: 85, weight: .semibold))
+                        .foregroundColor(.white.opacity(0.8))
                         .frame(maxWidth: .infinity)
                         .padding(.top, 100)
 
@@ -40,8 +40,8 @@ struct HomeView: View {
 
                             DatePicker("Select a time", selection: $sleepTime, displayedComponents: .hourAndMinute)
                                 .labelsHidden()
-                                .background(Color.gray)
-                                .cornerRadius(10)
+                                .background(Color.gray.opacity(0.5))
+                                .cornerRadius(30)
 
                         } .padding(.trailing, 40)
 
@@ -53,24 +53,25 @@ struct HomeView: View {
 
                             DatePicker("Select a time", selection: $wakeTime, displayedComponents: .hourAndMinute)
                                 .labelsHidden()
-                                .background(Color.gray)
-                                .cornerRadius(10)
+                                .background(Color.gray.opacity(0.5))
+                                .cornerRadius(30)
                         } .padding(.leading, 40)
                     } .padding(.bottom, 90)
 
                     Button("Log Rest") {
                         if !hasAlreadyLoggedRest() {
                             let components = Calendar.current.dateComponents([.hour, .minute], from: sleepTime, to: wakeTime)
-                            _ = Double(components.hour ?? 0) + Double(components.minute ?? 0) / 60
-                            calculateAndLogRestHours()
+                            let hoursSlept = Double(components.hour ?? 0) + Double(components.minute ?? 0) / 60
+                            calculateAndLogRestHours(hoursSlept)
                         } else {
                             showError = true
                         }
                     }
+
                     .padding()
                     .foregroundColor(.white)
-                    .background(Color.gray)
-                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.5))
+                    .cornerRadius(30)
 
                     Spacer()
 
@@ -127,11 +128,7 @@ struct HomeView: View {
         return false
     }
 
-    func calculateAndLogRestHours() {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.hour, .minute], from: sleepTime, to: wakeTime)
-        let hoursSlept = Double(components.hour ?? 0) + Double(components.minute ?? 0) / 60
-
+    func calculateAndLogRestHours(_ hoursSlept: Double) {
         let currentDate = Date()
         let lastLoggedRestDate = UserDefaults.standard.object(forKey: "last_logged_rest_date") as? Date
 
@@ -143,11 +140,17 @@ struct HomeView: View {
                 // Log the rest
                 loggedRestHours = hoursSlept
                 UserDefaults.standard.set(currentDate, forKey: "last_logged_rest_date")
+
+                // Call the function to update sleep data in ChartsView
+                ChartsView().updateSleepData(hoursSlept: hoursSlept)
             }
         } else {
             // Log the rest for the first time
             loggedRestHours = hoursSlept
             UserDefaults.standard.set(currentDate, forKey: "last_logged_rest_date")
+
+            // Call the function to update sleep data in ChartsView
+            ChartsView().updateSleepData(hoursSlept: hoursSlept)
         }
     }
 }

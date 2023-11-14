@@ -22,7 +22,7 @@ struct RegistrationView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.purple
+                Color.clear.withSharedBackground()
                     .ignoresSafeArea()
 
                 VStack {
@@ -35,11 +35,12 @@ struct RegistrationView: View {
                     TextField("Name", text: $name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.bottom, 40)
+                        .cornerRadius(15)
 
                     Text("Age: \(Int(age))")
                         .foregroundColor(.white)
 
-                    Slider(value: $age, in: 16...100, step: 1)
+                    Slider(value: $age, in: 16...65, step: 1)
                         .padding(.bottom)
 
                     Text("Bed Time:")
@@ -48,7 +49,7 @@ struct RegistrationView: View {
                     DatePicker("Select a time", selection: $bedTime, displayedComponents: .hourAndMinute)
                         .labelsHidden()
                         .background(Color.gray)
-                        .cornerRadius(10)
+                        .cornerRadius(30)
                         .padding(.bottom, 40)
 
                     if showError {
@@ -69,7 +70,7 @@ struct RegistrationView: View {
                     .padding()
                     .foregroundColor(.white)
                     .background(Color.gray)
-                    .cornerRadius(10)
+                    .cornerRadius(30)
                 }
             }
             .navigationBarTitle("", displayMode: .inline)
