@@ -29,7 +29,7 @@ struct HomeView: View {
                         .foregroundColor(.white.opacity(0.8))
                         .frame(maxWidth: .infinity)
                         .padding(.top, 100)
-
+                        .navigationBarBackButtonHidden(true)
                     Spacer()
 
                     HStack {
@@ -44,7 +44,7 @@ struct HomeView: View {
                                 .cornerRadius(30)
 
                         } .padding(.trailing, 40)
-
+                            .navigationBarBackButtonHidden(true)
 
                         VStack {
                             Text("Wake Time:")
@@ -97,7 +97,6 @@ struct HomeView: View {
                                 .foregroundColor(.white)
                                 .padding(.leading, 25)
                         }
-
                     }
                     .padding(.horizontal, 20)
                 }

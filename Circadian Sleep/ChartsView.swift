@@ -22,6 +22,16 @@ struct ChartsView: View {
         Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 12))!
     ]
 
+    func averageSleepPerNight(data: [Double]) -> Double {
+        guard !data.isEmpty else { return 0 }
+        let totalHours = data.reduce(0, +)
+        return totalHours / Double(data.count)
+    }
+
+    var averageLast7DaysSleep: Double {
+        return averageSleepPerNight(data: last7DaysData)
+    }
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -32,6 +42,7 @@ struct ChartsView: View {
                         .font(.system(size: 52, weight: .semibold))
                         .foregroundColor(.white.opacity(0.8))
                         .padding(.bottom, 80)
+                        .navigationBarBackButtonHidden(true)
 
                     BarGraph(data: last7DaysData, dates: sampleDates, title: "Last Week's Rest", maxY: 12)
                         .frame(height: 300)
@@ -39,13 +50,11 @@ struct ChartsView: View {
                         .background(Color.gray.opacity(0.5))
                         .cornerRadius(30)
 
-                    NavigationLink(destination: LineGraph(data: last30DaysData, title: "Last Month's Rest", maxY: 12, lineColor: Color.purple)) {
-                        Text("View Last Month's Rest")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.gray.opacity(0.5))
-                            .cornerRadius(30)
-                    }
+                    Text("Average Nightly: \(averageLast7DaysSleep, specifier: "%.1f") hours")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.gray.opacity(0.8))
+                        .cornerRadius(10)
                 }
             }
             .toolbar {
@@ -68,6 +77,7 @@ struct ChartsView: View {
                                 .foregroundColor(.white)
                                 .padding(.leading, 25)
                         }
+                        .navigationBarBackButtonHidden(true)
                     }
                     .padding()
                 }

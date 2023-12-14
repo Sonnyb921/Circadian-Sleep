@@ -11,24 +11,28 @@ struct ContentView: View {
     @State private var navigateToRegistration = false
     
     var body: some View {
-        ZStack {
-            if !navigateToRegistration {
-                SplashScreenView()
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            navigateToRegistration = true
+        NavigationView {
+            ZStack {
+                if !navigateToRegistration {
+                    SplashScreenView()
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                navigateToRegistration = true
+                            }
                         }
+                } else {
+                    NavigationLink(
+                        destination: RegistrationView(),
+                        isActive: $navigateToRegistration
+                    ) {
+                        EmptyView()
                     }
-            } else {
-                RegistrationView()
-                    .onDisappear {
-                        navigateToRegistration = false
-                    }
+                }
             }
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

@@ -15,8 +15,8 @@ struct LineGraph: View {
 
     var body: some View {
         ZStack {
-            // Background Image
-            Image("background png") // Replace with your actual image name
+            
+            Image("background png")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -24,12 +24,6 @@ struct LineGraph: View {
             // Line graph
             VStack {
                 Spacer()
-                Text("Last Month's Rest")
-                    .font(.system(size: 40, weight: .semibold))
-                    .foregroundColor(.white .opacity(0.8))
-                    
-                
-                
                 GeometryReader { geometry in
                     Path { path in
                         for (index, value) in data.enumerated() {
@@ -43,7 +37,7 @@ struct LineGraph: View {
                         }
                     }
                     .strokedPath(.init(lineWidth: 4, lineCap: .round, lineJoin: .round))
-                    .foregroundColor(lineColor)
+                    .foregroundColor(.white)
                     .background(Color.gray.opacity(0.5))
                     .cornerRadius(30)
                     .padding()
